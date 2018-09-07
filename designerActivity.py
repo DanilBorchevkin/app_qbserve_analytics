@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Редактор Spyder
-
 Designer activity
 """
 
 import matplotlib.pyplot as plt
-import csv
-import ast
+import csv 
+from tkinter import filedialog
+from tkinter import *
 
 CSV_FIELDS = ['Minutes', 'Name', 'App', 'Category']
 
@@ -27,9 +26,7 @@ def parseLogData(filepath):
             minutes = float(minutes)
         except:
             continue
-        
-        print(minutes)
-        
+                
         if appName in logdata:
             logdata[appName] += minutes
         else:
@@ -38,30 +35,42 @@ def parseLogData(filepath):
     return logdata
 
 def filterLogData(logdata):
-    communication = ['Telegram', 'WhatsApp', 'Битрикс24', 'Skype']
+    communication = ['Telegram', 'WhatsApp', 'Битрикс24', 'Skype', 'Spark']
     ux = ['XMind', 'Notion']
-    design = ['Photoshop CC', 'Sketch', 'Adobe Illustrator CC 2018']
-    prototype = ['Axure RP 8', 'Spark']
+    sketch = ['Sketch']
+    photoshop = ['Photoshop CC']
+    illustrator = ['Adobe Illustrator CC 2018']
+    prototype = ['Axure RP 8']
     frontend = ['Zeplin']
+    research = ['Google Chrome']
     
     newLogdata = {}
     newLogdata['Communication'] = 0
     newLogdata['UX'] = 0
-    newLogdata['Design'] = 0
+    newLogdata['Sketch'] = 0
+    newLogdata['Photoshop'] = 0
+    newLogdata['Illustrator'] = 0
     newLogdata['Prototype'] = 0
     newLogdata['Frontend'] = 0
+    newLogdata['Research'] = 0
     
     for key in logdata:
         if key in communication:
             newLogdata['Communication'] += logdata[key]
         if key in ux:
             newLogdata['UX'] += logdata[key]
-        if key in design:
-            newLogdata['Design'] += logdata[key]
+        if key in sketch:
+            newLogdata['Sketch'] += logdata[key]
+        if key in photoshop:
+            newLogdata['Photoshop'] += logdata[key]
+        if key in illustrator:
+            newLogdata['Illustrator'] += logdata[key]
         if key in prototype:
             newLogdata['Prototype'] += logdata[key]
         if key in frontend:
             newLogdata['Frontend'] += logdata[key]
+        if key in research:
+            newLogdata['Research'] += logdata[key]
     
     return newLogdata
 
@@ -81,8 +90,12 @@ def showPieChart(logdata):
 
 if __name__ == "__main__":
     print('Script is started')
-    
-    logdata = parseLogData('./testData.csv')
+
+    root = Tk()
+    root.filename =  filedialog.askopenfilename(title = "Select file")
+    filepath = root.filename
+
+    logdata = parseLogData(filepath)
     
     logdata = filterLogData(logdata)
     
